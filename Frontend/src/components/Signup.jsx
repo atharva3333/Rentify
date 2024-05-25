@@ -13,7 +13,7 @@ function Signup() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/register", { name, email, password })
+        axios.post("https://rentify-1-xlg3.onrender.com/register", { name, email, password })
         .then(result => {
             if (result.data.message === "Email already in use") {
                 setError(result.data.message);
@@ -29,7 +29,7 @@ function Signup() {
     }
 
     return (
-        <div className="flex justify-center items-center bg-gray-600 min-h-screen">
+        <div className="flex justify-center items-center bg-gray-900 min-h-screen">
             <div className="bg-white p-6 rounded w-1/4">
                 <h2 className="text-center text-2xl font-bold mb-4">Sign Up</h2>
                 {error && <p className="text-red-500 mb-4">{error}</p>}

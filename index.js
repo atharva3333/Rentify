@@ -2,6 +2,7 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 const UserModel = require("./model/User")
+const Property = require('./model/Property');
 const path = require("path");
 
 const app = express()
@@ -29,8 +30,6 @@ app.post("/login", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-
-
 app.post("/register", (req, res) => {
     const { email, name, password } = req.body;
 
@@ -49,6 +48,65 @@ app.post("/register", (req, res) => {
     })
     .catch(err => res.status(500).json({ error: err.message }));
 });
+
+app.post('/properties', async (req, res) => {
+    try {
+      const { propertyName, address, city, state, price, email } = req.body;
+      const newProperty = new Property({ propertyName, address, city, state, price, email });
+      await newProperty.save();
+      res.status(201).json(newProperty);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+});
+
+app.get('/properties', async (req, res) => {
+    try {
+        const email = req.query.email;
+        if (!email) {
+            return res.status(400).json({ message: 'Email is required' });
+        }
+        const properties = await Property.find({ email });
+        res.status(200).json(properties);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.get('/all-properties', async (req, res) => {
+    try {
+        const properties = await Property.find();
+        res.status(200).json(properties);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+app.put('/properties/:id', async (req, res) => {
+    try {
+      const property = await Property.findByIdAndUpdate(req.params.id, req.body, { new: true });
+      if (!property) {
+        return res.status(404).json({ message: 'Property not found' });
+      }
+      res.status(200).json(property);
+    } catch (err) {
+      res.status(400).json({ message: err.message });
+    }
+  });
+  
+  // Delete a property
+  app.delete('/properties/:id', async (req, res) => {
+    try {
+      const property = await Property.findByIdAndDelete(req.params.id);
+      if (!property) {
+        return res.status(404).json({ message: 'Property not found' });
+      }
+      res.status(200).json({ message: 'Property deleted successfully' });
+    } catch (err) {
+      res.status(500).json({ message: err.message });
+    }
+  });
+  
 
 
 

@@ -12,12 +12,12 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3001/login", { email, password })
+        axios.post("https://rentify-1-xlg3.onrender.com/login", { email, password })
         .then(response => {
             const { data } = response;
             if (response.status === 200) {
-                localStorage.setItem('userId', data.id);  // Store the user ID in localStorage
-                console.log("Stored User ID:", localStorage.getItem('userId'));  // Log the stored user ID
+                localStorage.setItem('email', email);  // Store the email in localStorage
+                console.log("Stored Email:", localStorage.getItem('email'));  // Log the stored email
                 navigate("/home");
             } else {
                 setError(data.message);
@@ -32,10 +32,11 @@ function Login() {
             setError("An error occurred. Please try again.");
         });
     };
+    
 
 
   return (
-    <div className="flex justify-center items-center bg-gray-600 min-h-screen">
+    <div className="flex justify-center items-center bg-gray-900 min-h-screen">
     <div className="bg-white p-6 rounded w-1/4">
         <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
         <form onSubmit={handleSubmit}>

@@ -4,6 +4,7 @@ import Signup from './components/Signup'
 import Login from './components/Login'
 import Home from './components/Home'
 import LandingPage from './components/LandingPage'
+import Seller from './components/Seller'
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/' element={<LandingPage />}/>
         <Route path='/home' element={<Home />}/>
+        <Route path='/seller' element={<Seller />}/>
       </Routes>
     </BrowserRouter>
   )
