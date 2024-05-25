@@ -10,7 +10,7 @@ app.use(cors())
 
 mongoose.connect("mongodb+srv://Atharva:Atharva@cluster0.idksxfa.mongodb.net/");
 
-app.use(express.static(path.join(__dirname, "Frontend/dist")));
+
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
@@ -50,9 +50,6 @@ app.post("/register", (req, res) => {
     .catch(err => res.status(500).json({ error: err.message }));
 });
 
-app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "Frontend/dist", "index.html"));
-});
 
 
 app.listen(3001, () => {
