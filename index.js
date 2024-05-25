@@ -106,6 +106,28 @@ app.put('/properties/:id', async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   });
+
+  app.get("/user", (req, res) => {
+    const email = req.query.email;
+
+    // Check if email is provided
+    if (!email) {
+        return res.status(400).json({ message: "Email is required" });
+    }
+
+    // Find user by email
+    UserModel.findOne({ email: email })
+    .then(user => {
+        if (!user) {
+            // User not found
+            res.status(404).json({ message: "User not found" });
+        } else {
+            // User found, return user data
+            res.json(user);
+        }
+    })
+    .catch(err => res.status(500).json({ error: err.message }));
+});
   
 
 

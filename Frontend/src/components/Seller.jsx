@@ -16,7 +16,7 @@ const Seller = () => {
   };
 
   const generateRandomImage = () => {
-    const imageNumber = Math.floor(Math.random() * 11) + 1; // Generates a number between 1 and 11
+    const imageNumber = Math.floor(Math.random() * 10) + 1; // Generates a number between 1 and 11
     return `assets/${imageNumber}.jpg`; // Assuming your images are stored in the public/images folder
   };
 

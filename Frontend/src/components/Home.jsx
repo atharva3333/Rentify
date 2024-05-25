@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
+import Modal from './Modal';
 
 const Home = () => {
   const [allProperties, setAllProperties] = useState([]);
@@ -10,10 +11,13 @@ const Home = () => {
     state: '',
     price: ''
   });
+  const [showEmails, setShowEmails] = useState({});
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const generateRandomImage = () => {
-    const imageNumber = Math.floor(Math.random() * 11) + 1; // Generates a number between 1 and 11
-    return `assets/${imageNumber}.jpg`; // Assuming your images are stored in the public/images folder
+    const imageNumber = Math.floor(Math.random() * 10) + 1;
+    return `assets/${imageNumber}.jpg`;
   };
 
   useEffect(() => {
@@ -64,6 +68,29 @@ const Home = () => {
     });
   };
 
+  const fetchUserDetails = async (email) => {
+    try {
+      const response = await axios.get(`https://rentify-1-xlg3.onrender.com/user?email=${email}`);
+      setSelectedUser(response.data);
+    } catch (error) {
+      console.error('Error fetching user details:', error);
+    }
+  };
+
+  const toggleEmailVisibility = (property) => {
+    setShowEmails(prevState => ({
+      ...prevState,
+      [property._id]: !prevState[property._id]
+    }));
+    if (!showEmails[property._id]) {
+      fetchUserDetails(property.email);
+      setIsModalOpen(true);
+    } else {
+      setSelectedUser(null);
+      setIsModalOpen(false);
+    }
+  };
+
   return (
     <div>
       <Navbar />
@@ -104,6 +131,12 @@ const Home = () => {
                 <p>{property.address}</p>
                 <p>{property.city}, {property.state}</p>
                 <p className='font-bold text-lg'>₹{property.price}</p>
+                <button 
+                  onClick={() => toggleEmailVisibility(property)}
+                  className="bg-blue-500 text-white px-2 py-1 rounded-lg hover:bg-blue-600 font-semibold"
+                >
+                  {showEmails[property._id] ? 'Hide' : 'Show'} Seller&apos;s Details
+                </button>
               </div>
             ))
           ) : (
@@ -111,6 +144,11 @@ const Home = () => {
           )}
         </div>
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        user={selectedUser}
+      />
     </div>
   );
 };
