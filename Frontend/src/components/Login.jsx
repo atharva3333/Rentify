@@ -39,6 +39,8 @@ function Login() {
     <div className="flex justify-center items-center bg-gray-900 min-h-screen">
     <div className="bg-white p-6 rounded w-1/4">
         <h2 className="text-center text-2xl font-bold mb-4">Login</h2>
+
+        <p>Note: Backend takes up to 50 sec for a request please be patient.</p>
         <form onSubmit={handleSubmit}>
             <div className="mb-4">
                 <label htmlFor="email" className="block font-semibold mb-2">
